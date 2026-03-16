@@ -17,19 +17,34 @@ body {
 }
 #header_left {
     float: left;
+    height: 100%;
 }
 #header_right {
     float: right;
+    height: 100%;
 }
 .flex {
     display: flex;
-
 }
-.headerNav a {
+#header_nav {
+    height: 100%;
+    
+}
+#header_nav a,#header_rlm a {
+    height: 100%;
     font-size: 12px;
     color: #B0B0B0;
+    font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
 }
-.headerHr span {
+#header_nav span,#header_rlm span {
+    height: 100%;
     font-size: 12px;
     color: #424242;
+    font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+}
+.alignCenter {
+    align-items: center;
+}
+#header_nav,#header_rlm {
+    gap: 7px;
 }
