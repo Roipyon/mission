@@ -1,0 +1,30 @@
+main {
+
+}
+#create {
+    display: flex;
+}
+#createBtn {
+    cursor: pointer;
+    width: 50px;
+    height: 30px;
+    background-color: aqua;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#things {
+    width: 300px;
+    height: 10px;
+    background-color: rgb(209, 178, 178);
+}
+.thing {
+    display: flex;
+    gap: 5px;
+}
+.do {
+    width: 20px;
+    height: 20px;
+    border: 2px solid black;
+    border-radius: 50%;
+}

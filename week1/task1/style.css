@@ -102,6 +102,7 @@ html,body {
     background: url(./img/搜索.png) no-repeat;
     background-position: center;
     background-size: 20px 20px;
+    transition-duration: 0.25s;
 }
 #searchBtn:hover {
     background-color: #ff6a00;
