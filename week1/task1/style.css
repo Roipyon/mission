@@ -83,7 +83,12 @@ html,body {
 }
 #top_nav a {
     color: #333333;
+    transition: color 0.25s;
     font: 16px/1.5 Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif;
+}
+#top_nav a:hover {
+    color: #ff6a00;
+    transition: color 0.25s;
 }
 #top_nav {
     display: flex;
@@ -91,18 +96,24 @@ html,body {
 }
 #searchBtn {
     cursor: pointer;
-    border: 1px solid rgba(128, 128, 128, 0.315);
+    border: 1px solid rgba(128, 128, 128, 0.255);
     width: 50px;
     height: 50px;
     background: url(./img/搜索.png) no-repeat;
     background-position: center;
-    background-size: 23px 23px;
+    background-size: 20px 20px;
+}
+#searchBtn:hover {
+    background-color: #ff6a00;
+    background-image: url(./img/搜索白.png);
+    transition-property: background-color,background-image;
+    transition-duration: 0.25s;
 }
 #searchInput {
     width: 245px;
     height: 50px;
     box-sizing: border-box;
-    border: 1px solid rgba(128, 128, 128, 0.315);
+    border: 1px solid rgba(128, 128, 128, 0.255);
     border-right: none;
     outline: none;
     padding: 10px;
@@ -111,7 +122,8 @@ html,body {
     width: 1226px;
     height: 460px;
     margin: 0 auto;
-    background-color: aqua;
+    background-image: url(./img/01.jpg);
+    background-size: 100% 100%;
 }
 #swiperShow {
     float: left;
@@ -121,15 +133,17 @@ html,body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 22px;
 }
 #swiperShow a {
-    padding: 0 30px;
+    padding: 11px 30px;
     font-size: 14px;
     color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+#swiperShow a:hover {
+    background-color: #ff6a00;
 }
 #swiperShow a img{
     width: 15px;
@@ -163,8 +177,13 @@ html,body {
 #server a {
     font-size: 12px;
     color: #d1d1d1e1;
+    transition: color 0.20s;
     display: flex;
     gap: 3px;
     flex-direction: column;
     align-items: center;
+}
+#server a:hover {
+    color: white;
+    transition: color 0.20s;
 }
