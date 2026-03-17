@@ -124,6 +124,8 @@ html,body {
     margin: 0 auto;
     background-image: url(./img/01.jpg);
     background-size: 100% 100%;
+    position: relative;
+    transition-duration: 1s;
 }
 #swiperShow {
     float: left;
@@ -186,4 +188,60 @@ html,body {
 #server a:hover {
     color: white;
     transition: color 0.20s;
+}
+#swiperPoint {
+    display: flex;
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+}
+.point {
+    margin: 0 4px;
+    border-radius: 50%;
+    border: 2px solid #bebebe;
+    width: 6px;
+    height: 6px;
+    background-color: #00000066;
+}
+.swiperBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 41px;
+    height: 69px;
+    cursor: pointer;
+}
+#s_Btn {
+    float: right;
+    width: 992px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#prev {
+    background: url(./img/prev.png) no-repeat;
+    background-size: 30px 30px;
+    background-position: center;
+}
+#next {
+    background: url(./img/next.png) no-repeat;
+    background-size: 30px 30px;
+    background-position: center;
+}
+#prev:hover {
+    background-image: url(./img/左白.png);
+    background-color: #767778;
+}
+#next:hover {
+    background-image: url(./img/右白.png);
+    background-color: #767778;
+}
+.active {
+    margin: 0 4px;
+    border-radius: 50%;
+    border: 2px solid #00000066;
+    width: 6px;
+    height: 6px;
+    background-color: #ffffff66;
 }
