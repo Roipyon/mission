@@ -93,13 +93,13 @@ body {
 }
 
 #bin {
-    width: 240px;
+   width: 60%;
     height: 300px;
     border: 1px solid black;
-    position: relative;
-    left: 79px;
-    bottom: 366px;
     display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 /* #test {
