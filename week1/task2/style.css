@@ -1,30 +1,89 @@
-main {
-
+body {
+    background-color: gray;
 }
-#create {
+#div {
+    width: 400px;
+    height: 600px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px white;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
     display: flex;
-}
-#createBtn {
-    cursor: pointer;
-    width: 50px;
-    height: 30px;
-    background-color: aqua;
-    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-#things {
-    width: 300px;
-    height: 10px;
-    background-color: rgb(209, 178, 178);
+#title {
+    font-size: 30px;
+    margin: 0;
+    margin-bottom: 20px;
 }
-.thing {
+#create {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+#input {
+    outline: none;
+    /* border: none; */
+    width: 200px;
+    height: 25px;
+}
+#submit {
+    width: 80px;
+    height: 40px;
+    background-color: rgb(228, 228, 228);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+#thing {
+    width: 60%;
+    height: 300px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.normal {
+    width: 100%;
+    height: 30px;
     display: flex;
     gap: 5px;
+    justify-content: center;
+    align-items: center;
 }
-.do {
-    width: 20px;
-    height: 20px;
-    border: 2px solid black;
-    border-radius: 50%;
+.change {
+    height: 100%;
+    color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    cursor: pointer;
 }
+
+.changing {
+    width: 50px;
+}
+
+
+/* #test {
+    width: 100px;
+    height: 30px;
+    background-color: aqua;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+} */
