@@ -5,6 +5,10 @@ const input = document.querySelector('#input');
 const thing = document.querySelector('#thing');
 const binBtn = document.querySelector('#binBtn');
 const bin = document.querySelector('#bin');
+const closeBtn = document.querySelector('.close');
+const allBtn = document.querySelectorAll('.allBtn');
+const all = document.querySelector('#all');
+const mark = document.querySelector('#mark');
 
 let count = 0;
 
@@ -168,5 +172,34 @@ bin.addEventListener('click',(e)=>{
             status: 'do'
         }));
         e.target.parentNode.outerHTML = '';
+    }
+});
+
+// 打开全选界面
+all.addEventListener('click',()=>{
+    mark.style.display = 'block';
+});
+
+// 关闭全选界面
+closeBtn.addEventListener('click',()=>{
+    mark.style.display = 'none';
+});
+
+// 全部完成
+allBtn[0].addEventListener('click',()=>{
+    const normal = document.querySelectorAll('.normal');
+    normal.forEach((e)=>{
+        e.children[0].click(); // 模拟点击
+    });
+});
+
+// 全部清除
+// 不过多干涉全部完成的功能，仅删除已被完成的事件
+allBtn[1].addEventListener('click',()=>{
+    for (let i=0;i<=10;i++)
+    {
+        if (!localStorage.getItem(i)) continue;
+        if (JSON.parse(localStorage.getItem(i)).status === 'did')
+            localStorage.removeItem(i);
     }
 });
