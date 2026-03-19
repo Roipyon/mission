@@ -10,7 +10,43 @@ const swiper = document.querySelector('#swiper');
 const firstSwiper = document.querySelector('.point:first-child');
 const prevBtn = document.querySelector('#prev');
 const nextBtn = document.querySelector('#next');
+const topNav = document.querySelectorAll('#top_nav a');
+const drop = document.querySelector('#d');
+const show = document.querySelectorAll('.show');
+const showBar = document.querySelector('.showBar');
 
+show.forEach((e)=>{
+    e.addEventListener('mouseenter',()=>{
+        showBar.style.display = 'block';
+    });
+    e.addEventListener('mouseleave',()=>{
+        showBar.style.display = 'none';
+    });
+});
+showBar.addEventListener('mouseenter',()=>{
+    showBar.style.display = 'block';
+});
+showBar.addEventListener('mouseleave',()=>{
+    showBar.style.display = 'none';
+});
+topNav.forEach((e)=>{
+    e.addEventListener('mouseenter',()=>{
+    drop.style.maxHeight = '200px';
+    drop.style.visibility = "visible";
+    });
+    e.addEventListener('mouseleave',()=>{
+        drop.style.maxHeight = '0';
+        drop.style.visibility = "none";
+    });
+});
+drop.addEventListener('mouseenter',()=>{
+    drop.style.maxHeight = '200px';
+    drop.style.visibility = "visible";
+});
+drop.addEventListener('mouseleave',()=>{
+    drop.style.maxHeight = '0';
+    drop.style.visibility = "none";
+});
 swiperArr.forEach(item => {
     const img = new Image();
     img.src = item.url;

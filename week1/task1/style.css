@@ -137,7 +137,7 @@ html,body {
     flex-direction: column;
     justify-content: center;
 }
-#swiperShow a {
+.show {
     padding: 11px 30px;
     font-size: 14px;
     color: white;
@@ -245,4 +245,50 @@ html,body {
     width: 6px;
     height: 6px;
     background-color: #ffffff66;
+}
+#d {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    background-color: #ffffff;
+    border-top: 1px solid rgba(128, 128, 128, 0.274);
+    box-shadow: 0 5px 10px -5px gray;
+
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: max-height 0.4s;
+    transition-delay: 0.5s;
+}
+#drop {
+    width: 1226px;
+    height: 200px;
+    margin: 0 auto;
+    z-index: 1000;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dropItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.dropItem a img {
+    padding: 0 20px;
+}
+.itemTitle,.price {
+    font-size: 12px;
+}
+.price {
+    color: #ff6a00;
+}
+.showBar {
+    position: absolute;
+    left: 234px;
+    height: 460px;
+    width: 530px;
+    background-color: #ffffff;
 }
