@@ -16,15 +16,28 @@ const show = document.querySelectorAll('.show');
 const showBar = document.querySelector('.showBar');
 const cart = document.querySelector('#header_cart');
 const shopCart = document.querySelector('#shopCart');
+const cartLink = document.querySelector('#header_cart a');
+const point = document.querySelectorAll('.point');
 
+// 图片预加载
+swiperArr.forEach(item => {
+    const img = new Image();
+    img.src = item.url;
+});
+
+// 购物车栏样式
 cart.addEventListener('mouseenter',()=>{
     shopCart.style.maxHeight = '100px';
     shopCart.style.visibility = 'visible';
+    cartLink.style.color = "#ff6a00";
+
 });
 cart.addEventListener('mouseleave',()=>{
     shopCart.style.maxHeight = '0';
-    shopCart.style.visibility = 'hidden';
+    cartLink.style.color = "#B0B0B0";
+    shopCart.style.visibility = 'none';
 });
+// 侧边栏样式
 show.forEach((e)=>{
     e.addEventListener('mouseenter',()=>{
         showBar.style.display = 'block';
@@ -39,6 +52,7 @@ showBar.addEventListener('mouseenter',()=>{
 showBar.addEventListener('mouseleave',()=>{
     showBar.style.display = 'none';
 });
+// 抽屉下拉样式
 topNav.forEach((e)=>{
     e.addEventListener('mouseenter',()=>{
     drop.style.maxHeight = '200px';
@@ -57,10 +71,7 @@ drop.addEventListener('mouseleave',()=>{
     drop.style.maxHeight = '0';
     drop.style.visibility = "none";
 });
-swiperArr.forEach(item => {
-    const img = new Image();
-    img.src = item.url;
-});
+
 function swiperAdd(){
     const prev = document.querySelector(`.point:nth-child(${count+1})`);
     prev.classList.remove('active');
@@ -97,4 +108,16 @@ swiper.addEventListener('mouseleave',()=>{
     timer = setInterval(()=>{
         swiperAdd();
     }, 5000)
+});
+
+// 轮播图手动切换
+point.forEach((e,index)=>{
+    e.addEventListener('click',()=>{
+        const prev = document.querySelector(`.point:nth-child(${count+1})`);
+        prev.classList.remove('active');
+        count = index;
+        const current = document.querySelector(`.point:nth-child(${count+1})`);
+        current.classList.add('active');
+        swiper.style.backgroundImage = `url(${swiperArr[count].url})`;
+    });
 });
