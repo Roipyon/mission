@@ -14,7 +14,17 @@ const topNav = document.querySelectorAll('#top_nav a');
 const drop = document.querySelector('#d');
 const show = document.querySelectorAll('.show');
 const showBar = document.querySelector('.showBar');
+const cart = document.querySelector('#header_cart');
+const shopCart = document.querySelector('#shopCart');
 
+cart.addEventListener('mouseenter',()=>{
+    shopCart.style.maxHeight = '100px';
+    shopCart.style.visibility = 'visible';
+});
+cart.addEventListener('mouseleave',()=>{
+    shopCart.style.maxHeight = '0';
+    shopCart.style.visibility = 'hidden';
+});
 show.forEach((e)=>{
     e.addEventListener('mouseenter',()=>{
         showBar.style.display = 'block';
