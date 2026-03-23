@@ -19,16 +19,27 @@ const pool = myspl.createPool(poolConfig);
 // 中间件
 // 挂载静态资源
 app.use(express.static('public'));
+// 解析请求体
+app.use(express.json());
 
 // 处理逻辑
 app.get('/',async (req,res)=>{
     // 页面刷新获取事项
     const rows = await pool.query('select * from things');
     res.send(JSON.stringify(rows));
-    // 页面发送请求
-    const waitModify = await req.body.JSON();
 });
-
+app.post('/',async(req,res)=>{
+    // 处理提交表单
+    const waitModify = await JSON.parse(req.body);
+    if (waitModify.event === "create")
+    {
+        const rows = pool.query('insert into things (title,status) values (?,?)',[waitModify.title,waitModify.status]);
+        if (rows.affectRows === 1)
+        {
+            
+        }
+    }
+});
 // 监听
 app.listen(PORT,()=>{
     console.log('ok');

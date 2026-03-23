@@ -14,6 +14,24 @@ const mark = document.querySelector('#mark');
 
 let count = 0;
 
+async function renderThing(){
+    const _response = await fetch('/',{
+        method: 'get',
+        headers: {'Content-Type': 'application/json'}
+    });
+    const thingJSON = _response.json();
+    const content = thingJSON.title;
+    const newThing = document.createElement('div');
+    thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
+    // 添加自定义属性记录事件编号
+    newThing.outerHTML = `
+        <div class="normal">
+            <input type="checkbox" class="select">
+            <p>${content}</p>
+            <p class="change">修改</p>
+        </div>
+        `;
+};
 // 渲染本地事件
 document.addEventListener('DOMContentLoaded',async ()=>{
     const response = await fetch('/',{
@@ -61,21 +79,11 @@ createBtn.addEventListener('click',async(e)=>{
         body: JSON.stringify({
             title: content,
             status: 'do',
+            event: 'create'
         })
     });
-    const newThing = document.createElement('div');
-    thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
-    // 添加自定义属性记录事件编号
-    newThing.outerHTML = `
-        <div class="normal" data-id=${count}>
-            <input type="checkbox" class="select">
-            <p>${content}</p>
-            <p class="change">修改</p>
-        </div>
-        `;
-    count++;
-    // console.dir(newThing);
-    // console.dir(e);
+    if (response.ok)
+        renderThing();
 });
 // 修改事件
 thing.addEventListener('click',e=>{
