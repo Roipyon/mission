@@ -58,7 +58,7 @@ async function renderDidThing(){
     });
 };
 // 渲染本地事件
-document.addEventListener('DOMContentLoaded',async ()=>{
+document.addEventListener('DOMContentLoaded',async()=>{
     renderDoThing();
 });
 // 创建事件
@@ -93,11 +93,10 @@ createBtn.addEventListener('click',async(e)=>{
     }
 });
 // 修改事件
-thing.addEventListener('click',async e=>{
+thing.addEventListener('click',async(e)=>{
     const id = Number(e.target.parentNode.dataset.id);
     const target = e.target;
     if (e.target.className != 'change') return;
-    //console.log(e.target.previousElementSibling);
     if (target.innerText === '修改')
     {
         const change_p = target.previousElementSibling;
@@ -127,7 +126,7 @@ thing.addEventListener('click',async e=>{
     }
 });
 // 完成事件
-thing.addEventListener('change', async e => {
+thing.addEventListener('change', async(e)=>{
     const id = Number(e.target.parentNode.dataset.id);
     if(e.target.className != 'select') return;
     if (e.target.checked)
@@ -152,7 +151,6 @@ thing.addEventListener('change', async e => {
 
 // 回收站
 binBtn.addEventListener('click',(e)=>{
-    console.log(e);
     if (e.target.tagName === 'svg')
     {
         e.target.parentNode.innerHTML = '<span style="cursor: pointer">确定</span>';
@@ -178,7 +176,7 @@ binBtn.addEventListener('click',(e)=>{
 });
 
 // 恢复事件
-bin.addEventListener('click',async (e)=>{
+bin.addEventListener('click',async(e)=>{
     if (e.target.innerText === '恢复')
     {
         const id = Number(e.target.parentNode.dataset.id);
@@ -216,7 +214,7 @@ allBtn[0].addEventListener('click',()=>{
 
 // 全部清除
 // 不过多干涉全部完成的功能，仅删除已被完成的事件
-allBtn[1].addEventListener('click',async ()=>{
+allBtn[1].addEventListener('click',async()=>{
     const response = await fetch('/',{
         method: 'post',
         headers: {'Content-Type': 'application/json'},

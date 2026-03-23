@@ -2,6 +2,7 @@ const express = require('express');
 const myspl = require('mysql2/promise');
 const app = express();
 const PORT = 5000;
+const HOST = '0.0.0.0';
 require('dotenv').config();
 
 const poolConfig = {
@@ -68,7 +69,8 @@ app.post('/',async(req,res)=>{
         else res.json({success: false, message: '事件删除失败！'});
     }
 });
+
 // 监听
-app.listen(PORT,()=>{
+app.listen(PORT,HOST,()=>{
     console.log('To-Do-List launched!');
 });
