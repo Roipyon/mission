@@ -1,0 +1,58 @@
+# 常见应忽略的文件后缀
+*.log
+*.log.*
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+
+# 编译/字节码/二进制
+*.class
+*.jar
+*.war
+*.ear
+*.pyc
+*.pyo
+*.pyd
+*.o
+*.obj
+*.out
+*.exe
+*.dll
+*.so
+*.dylib
+*.app
+*.dSYM
+
+# 包/归档/压缩
+*.zip
+*.tar
+*.gz
+*.tgz
+*.7z
+*.rar
+
+# 数据库/缓存/环境
+*.sqlite
+*.sqlite3
+*.db
+*.cache
+*.log
+*.pid
+*.seed
+*.env
+*.local
+*.pem
+*.key
+*.crt
+
+# 包管理器产物（视项目适当调整）
+node_modules/
+dist/
+build/
+target/
