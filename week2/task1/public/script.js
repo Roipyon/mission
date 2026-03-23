@@ -1,3 +1,5 @@
+const { json } = require("body-parser");
+
 console.log('script loaded');
 
 const createBtn = document.querySelector('#submit');
@@ -9,15 +11,13 @@ const closeBtn = document.querySelector('.close');
 const allBtn = document.querySelectorAll('.allBtn');
 const all = document.querySelector('#all');
 const mark = document.querySelector('#mark');
-const PORT = 5000;
-const baseURL = '127.0.0.1'+`:${PORT}/`;
 
 let count = 0;
 
 // 渲染本地事件
 document.addEventListener('DOMContentLoaded',async ()=>{
-    const response = await fetch('baseURL',{
-        method: get,
+    const response = await fetch('/',{
+        method: 'get',
         headers: {'Content-Type': 'application/json'},
     });
     if (!response.ok)
@@ -25,26 +25,27 @@ document.addEventListener('DOMContentLoaded',async ()=>{
         alert('网络错误！');
         return;
     }
-    // 获取本地事件并对象化
-    const contentObj = JSON.parse(response.JSON());
-    const content = contentObj.title;
-    const id = contentObj.id;
-    // 判断待办事项
-    if (content.length === 0 || contentObj.status != 'do') continue;
-    count = i+1;
-    const newThing = document.createElement('div');
-    thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
-    newThing.outerHTML = `
-        <div class="normal" data-id=${id}>
-            <input type="checkbox" class="select">
-            <p>${content}</p>
-            <p class="change">修改</p>
-        </div>
-        `;
+    console.log(response);
+    // // 获取本地事件并对象化
+    // const contentObj = JSON.parse(response.JSON());
+    // const content = contentObj.title;
+    // const id = contentObj.id;
+    // // 判断待办事项
+    // if (content.length === 0 || contentObj.status != 'do') continue;
+    // count = i+1;
+    // const newThing = document.createElement('div');
+    // thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
+    // newThing.outerHTML = `
+    //     <div class="normal" data-id=${id}>
+    //         <input type="checkbox" class="select">
+    //         <p>${content}</p>
+    //         <p class="change">修改</p>
+    //     </div>
+    //     `;
 
 });
 // 创建事件
-createBtn.addEventListener('click',(e)=>{
+createBtn.addEventListener('click',async(e)=>{
     input.style.border = '';
     const content = input.value;
     if (content.length === 0) {
@@ -53,12 +54,15 @@ createBtn.addEventListener('click',(e)=>{
         return ;
     }
     input.value = '';
-    // 将事件存储至本地
-    localStorage.setItem(count,JSON.stringify({
-        id: count,
-        title: content,
-        status: 'do' // 待办
-    }));
+    // 将事件存储至数据库
+    const response = await fetch('/',{
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            title: content,
+            status: 'do',
+        })
+    });
     const newThing = document.createElement('div');
     thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
     // 添加自定义属性记录事件编号

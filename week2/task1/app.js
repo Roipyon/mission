@@ -22,7 +22,11 @@ app.use(express.static('public'));
 
 // 处理逻辑
 app.get('/',async (req,res)=>{
-    
+    // 页面刷新获取事项
+    const rows = await pool.query('select * from things');
+    res.send(JSON.stringify(rows));
+    // 页面发送请求
+    const waitModify = await req.body.JSON();
 });
 
 // 监听
