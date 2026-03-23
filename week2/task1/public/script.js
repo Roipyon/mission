@@ -1,5 +1,3 @@
-const { json } = require("body-parser");
-
 console.log('script loaded');
 
 const createBtn = document.querySelector('#submit');
@@ -12,55 +10,56 @@ const allBtn = document.querySelectorAll('.allBtn');
 const all = document.querySelector('#all');
 const mark = document.querySelector('#mark');
 
-let count = 0;
-
-async function renderThing(){
-    const _response = await fetch('/',{
+// 渲染事件
+async function renderDoThing(){
+    const _response = await fetch('/get/things',{
         method: 'get',
         headers: {'Content-Type': 'application/json'}
     });
-    const thingJSON = _response.json();
-    const content = thingJSON.title;
-    const newThing = document.createElement('div');
-    thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
-    // 添加自定义属性记录事件编号
-    newThing.outerHTML = `
-        <div class="normal">
-            <input type="checkbox" class="select">
-            <p>${content}</p>
-            <p class="change">修改</p>
-        </div>
-        `;
+    const thingJSON = await _response.json();
+    thingJSON.forEach((e)=>{
+        if (e.status === 'do')
+        {   
+            const content = e.title;
+            const newThing = document.createElement('div');
+            thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
+            // 添加自定义属性记录事件编号
+            newThing.outerHTML = `
+                <div class="normal" data-id=${e.id}>
+                    <input type="checkbox" class="select">
+                    <p>${content}</p>
+                    <p class="change">修改</p>
+                </div>
+                `;
+        }
+    });
+};
+async function renderDidThing(){
+    const _response = await fetch('/get/things',{
+        method: 'get',
+        headers: {'Content-Type': 'application/json'}
+    });
+    const thingJSON = await _response.json();
+    thingJSON.forEach((e)=>{
+        if (e.status === 'did')
+        {   
+            const content = e.title;
+            const newThing = document.createElement('div');
+            bin.insertBefore(newThing, document.querySelector('#bin div:first-child'));
+            // 添加自定义属性记录事件编号
+            newThing.outerHTML = `
+                <div class="normal" data-id=${e.id}>
+                    <input type="checkbox" checked disabled>
+                    <p style="color: gray;text-decoration: line-through solid">${content}</p>
+                    <p style="font-size: 13px;cursor: pointer">恢复</p>
+                </div>
+                `;
+        }
+    });
 };
 // 渲染本地事件
 document.addEventListener('DOMContentLoaded',async ()=>{
-    const response = await fetch('/',{
-        method: 'get',
-        headers: {'Content-Type': 'application/json'},
-    });
-    if (!response.ok)
-    {
-        alert('网络错误！');
-        return;
-    }
-    console.log(response);
-    // // 获取本地事件并对象化
-    // const contentObj = JSON.parse(response.JSON());
-    // const content = contentObj.title;
-    // const id = contentObj.id;
-    // // 判断待办事项
-    // if (content.length === 0 || contentObj.status != 'do') continue;
-    // count = i+1;
-    // const newThing = document.createElement('div');
-    // thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
-    // newThing.outerHTML = `
-    //     <div class="normal" data-id=${id}>
-    //         <input type="checkbox" class="select">
-    //         <p>${content}</p>
-    //         <p class="change">修改</p>
-    //     </div>
-    //     `;
-
+    renderDoThing();
 });
 // 创建事件
 createBtn.addEventListener('click',async(e)=>{
@@ -82,14 +81,21 @@ createBtn.addEventListener('click',async(e)=>{
             event: 'create'
         })
     });
-    if (response.ok)
-        renderThing();
+    const resJson = await response.json();
+    if (resJson.success)
+    {
+        thing.innerHTML = '';
+        renderDoThing();
+    }
+    else 
+    {
+        alert(resJson.message);
+    }
 });
 // 修改事件
-thing.addEventListener('click',e=>{
+thing.addEventListener('click',async e=>{
+    const id = Number(e.target.parentNode.dataset.id);
     const target = e.target;
-    // 当前的 target 为 input
-    const id = Number(target.parentNode.dataset.id);
     if (e.target.className != 'change') return;
     //console.log(e.target.previousElementSibling);
     if (target.innerText === '修改')
@@ -105,33 +111,42 @@ thing.addEventListener('click',e=>{
         if (changing && changing.tagName == 'INPUT') {
             const content_new = changing.value.trim() || '未命名';
             changing.outerHTML = `<p>${content_new}</p>`;
-            localStorage.setItem(id,JSON.stringify({
-                id: id,
-                title: content_new,
-                status: 'do'
-            }));
-            target.innerText = '修改';
+            const response = await fetch('/',{
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    id: id,
+                    title: content_new,
+                    event: 'modify'
+                })
+            })
+            const resJson = await response.json();
+            if (resJson.success) target.innerText = '修改';
+            else alert('修改失败！');
         }
     }
 });
-// 删除事件
-thing.addEventListener('change', e => {
+// 完成事件
+thing.addEventListener('change', async e => {
     const id = Number(e.target.parentNode.dataset.id);
     if(e.target.className != 'select') return;
     if (e.target.checked)
     {
         const next_p = e.target.nextElementSibling;
-        console.dir(next_p);
         next_p.style.color = "gray";
         next_p.style.textDecoration = "line-through solid";
         next_p.nextElementSibling.outerHTML = '';
         e.target.disabled = 'true';
-        // localStorage.removeItem(id); 可选择直接删除事件
-        localStorage.setItem(id,JSON.stringify({
-            id: id,
-            title: next_p.innerText,
-            status: 'did'
-        }));
+        const response = await fetch('/',{
+            method: 'post',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({
+                id: id,
+                event: 'delete'
+            })
+        });
+        const resJson = await response.json();
+        if (!resJson.success) alert(resJson.message);
     }
 });
 
@@ -143,25 +158,7 @@ binBtn.addEventListener('click',(e)=>{
         e.target.parentNode.innerHTML = '<span style="cursor: pointer">确定</span>';
         bin.style.display = 'block';
         thing.style.display = 'none';
-        for (let i=0;i<=10;i++)
-        {
-            // 获取本地事件并对象化
-            const contentObj = JSON.parse(localStorage.getItem(i));
-            if (!contentObj) continue;
-            const content = contentObj.title;
-            const id = contentObj.id;
-            // 判断待办事项
-            if (content.length === 0 || contentObj.status != 'did') continue;
-            const newThing = document.createElement('div');
-            bin.insertBefore(newThing, document.querySelector('#bin div:first-child'));
-            newThing.outerHTML = `
-                <div class="normal" data-id=${id}>
-                    <input type="checkbox" checked disabled>
-                    <p style="color: gray;text-decoration: line-through solid">${content}</p>
-                    <p style="font-size: 13px;cursor: pointer">恢复</p>
-                </div>
-                `;
-        }
+        renderDidThing();
     }
     else if (e.target.tagName === 'SPAN')
     {
@@ -175,22 +172,27 @@ binBtn.addEventListener('click',(e)=>{
         bin.innerHTML = `
             <div id="head1">
             </div>`;
-        location.reload();
+        thing.innerHTML = '';
+        renderDoThing();
     }
 });
 
 // 恢复事件
-bin.addEventListener('click',(e)=>{
+bin.addEventListener('click',async (e)=>{
     if (e.target.innerText === '恢复')
     {
-        const id = e.target.parentNode.dataset.id;
-        const thing = JSON.parse(localStorage.getItem(id));
-        localStorage.setItem(id,JSON.stringify({
-            id: id,
-            title: thing.title,
-            status: 'do'
-        }));
-        e.target.parentNode.outerHTML = '';
+        const id = Number(e.target.parentNode.dataset.id);
+        const response = await fetch('/',{
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                id: id,
+                event: 'recover'
+            })
+        });
+        const resJson = await response.json();
+        if(resJson.success) e.target.parentNode.outerHTML = '';
+        else alert(resJson.message);
     }
 });
 
@@ -214,6 +216,18 @@ allBtn[0].addEventListener('click',()=>{
 
 // 全部清除
 // 不过多干涉全部完成的功能，仅删除已被完成的事件
-allBtn[1].addEventListener('click',()=>{
-    localStorage.clear();
+allBtn[1].addEventListener('click',async ()=>{
+    const response = await fetch('/',{
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            event: 'remove'
+        })
+    });
+    const resJson = await response.json();
+    if (!resJson.success) alert(resJson.message);
+    else {
+        thing.innerHTML = '';
+        renderDoThing();
+    }
 });

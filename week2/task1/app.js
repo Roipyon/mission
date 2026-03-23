@@ -23,24 +23,52 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // 处理逻辑
-app.get('/',async (req,res)=>{
+app.get('/get/things',async (req,res)=>{
     // 页面刷新获取事项
     const rows = await pool.query('select * from things');
-    res.send(JSON.stringify(rows));
+    if (!rows[0].length) res.json({
+        success: false,
+        message: '待办事项为空！'
+    });
+    else {
+        res.json(rows[0]);
+    }
 });
 app.post('/',async(req,res)=>{
     // 处理提交表单
-    const waitModify = await JSON.parse(req.body);
+    const waitModify = req.body;
     if (waitModify.event === "create")
     {
-        const rows = pool.query('insert into things (title,status) values (?,?)',[waitModify.title,waitModify.status]);
-        if (rows.affectRows === 1)
-        {
-            
-        }
+        const rows = await pool.query('insert into things (title,status) values (?,?)',[waitModify.title,waitModify.status]);
+        if (rows[0].affectedRows === 1) res.json({success: true,message: ''});
+        else res.json({success: false, message: '事件创建失败！'});
+    }
+    else if (waitModify.event === 'modify')
+    {
+        const rows = await pool.query('update things set title=? where id=?',[waitModify.title,waitModify.id]);
+        if (rows[0].affectedRows === 1) res.json({success: true,message: ''});
+        else res.json({success: false, message: '事件修改失败！'});
+    }
+    else if (waitModify.event === 'delete')
+    {
+        const rows = await pool.query('update things set status=? where id=?',['did',waitModify.id]);
+        if (rows[0].affectedRows === 1) res.json({success: true,message: ''});
+        else res.json({success: false, message: '事件完成失败！'});
+    }
+    else if (waitModify.event === 'recover')
+    {
+        const rows = await pool.query('update things set status=? where id=?',['do',waitModify.id]);
+        if (rows[0].affectedRows === 1) res.json({success: true,message: ''});
+        else res.json({success: false, message: '事件恢复失败！'});
+    }
+    else if (waitModify.event === 'remove')
+    {
+        const rows = await pool.query('delete from things');
+        if (rows[0].affectedRows >= 1) res.json({success: true,message: ''});
+        else res.json({success: false, message: '事件删除失败！'});
     }
 });
 // 监听
 app.listen(PORT,()=>{
-    console.log('ok');
+    console.log('To-Do-List launched!');
 });
