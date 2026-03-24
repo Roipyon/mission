@@ -46,7 +46,7 @@ app.post('/',async(req,res)=>{
     }
     else if (waitModify.event === 'modify')
     {
-        const rows = await pool.query('update things set title=? where id=?',[waitModify.title,waitModify.id]);
+        const rows = await pool.query('update things set title=?,level=?,class=?,deadline=? where id=?',[waitModify.title,waitModify.level,waitModify.kind,waitModify.deadline,waitModify.id]);
         if (rows[0].affectedRows === 1) res.json({success: true,message: ''});
         else res.json({success: false, message: '事件修改失败！'});
     }
@@ -73,4 +73,5 @@ app.post('/',async(req,res)=>{
 // 监听
 app.listen(PORT,HOST,()=>{
     console.log('To-Do-List launched!');
+    console.log(`Click here to start your plan!: http://127.0.0.1:${PORT}`);
 });

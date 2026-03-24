@@ -5,10 +5,19 @@ const input = document.querySelector('#input');
 const thing = document.querySelector('#thing');
 const binBtn = document.querySelector('#binBtn');
 const bin = document.querySelector('#bin');
-const closeBtn = document.querySelector('.close');
+const markCloseBtn = document.querySelector('#mark_close');
+const modifyCloseBtn = document.querySelector('#modify_close');
 const allBtn = document.querySelectorAll('.allBtn');
 const all = document.querySelector('#all');
 const mark = document.querySelector('#mark');
+const modify = document.querySelector('#modify');
+const modifyBtn = document.querySelector('#modify_btn');
+const newTitleInput = document.querySelector('#title_input');
+const levelRadio = document.querySelectorAll('#level_radio input');
+const kindInput = document.querySelector('#kind_input');
+const timeInput = document.querySelector('#time_input');
+
+let modifyId = 0;
 
 // 渲染事件
 async function renderDoThing(){
@@ -21,13 +30,17 @@ async function renderDoThing(){
         if (e.status === 'do')
         {   
             const content = e.title;
+            const level = e.level === null?'':e.level;
+            const kind = e.class === null?'':e.class;
             const newThing = document.createElement('div');
             thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
             // 添加自定义属性记录事件编号
             newThing.outerHTML = `
                 <div class="normal" data-id=${e.id}>
+                    <span class="level">${level}</span>
+                    <span class="kind">${kind}</span>
                     <input type="checkbox" class="select">
-                    <p>${content}</p>
+                    <p class="title">${content}</p>
                     <p class="change">修改</p>
                 </div>
                 `;
@@ -44,13 +57,17 @@ async function renderDidThing(){
         if (e.status === 'did')
         {   
             const content = e.title;
+            const level = e.level === null?'':e.level;
+            const kind = e.class === null?'':e.class;
             const newThing = document.createElement('div');
             bin.insertBefore(newThing, document.querySelector('#bin div:first-child'));
             // 添加自定义属性记录事件编号
             newThing.outerHTML = `
                 <div class="normal" data-id=${e.id}>
+                    <span class="level">${level}</span>
+                    <span class="kind">${kind}</span>
                     <input type="checkbox" checked disabled>
-                    <p style="color: gray;text-decoration: line-through solid">${content}</p>
+                    <p class="title" style="color: gray;text-decoration: line-through solid">${content}</p>
                     <p style="font-size: 13px;cursor: pointer">恢复</p>
                 </div>
                 `;
@@ -94,35 +111,49 @@ createBtn.addEventListener('click',async(e)=>{
 });
 // 修改事件
 thing.addEventListener('click',async(e)=>{
-    const id = Number(e.target.parentNode.dataset.id);
+    modifyId = Number(e.target.parentNode.dataset.id);
     const target = e.target;
     if (e.target.className != 'change') return;
     if (target.innerText === '修改')
     {
         const change_p = target.previousElementSibling;
         const content_p = change_p.innerText;
-        change_p.outerHTML = `<input class="changing" name="input" value=${content_p}>`;
-        target.innerText = '确认';
+        modify.style.display = 'block';
+        newTitleInput.value = content_p;
     }
-    else if (target.innerText === '确认')
-    {
-        const changing = target.previousElementSibling;
-        if (changing && changing.tagName == 'INPUT') {
-            const content_new = changing.value.trim() || '未命名';
-            changing.outerHTML = `<p>${content_new}</p>`;
-            const response = await fetch('/',{
-                method: 'post',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    id: id,
-                    title: content_new,
-                    event: 'modify'
-                })
-            })
-            const resJson = await response.json();
-            if (resJson.success) target.innerText = '修改';
-            else alert('修改失败！');
+    
+});
+modifyBtn.addEventListener('click',async()=>{
+    const newTitle = newTitleInput.value.trim() || '未命名';
+    let level = null;
+    levelRadio.forEach((e)=>{
+        if (e.checked) {
+            level = e.value;
+            return;
         }
+    });
+    const kind = kindInput.value.trim() || null;
+    const deadline = timeInput.value?timeInput.value.replace('T',' ')+':00' : null;
+    const response = await fetch('/',{
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            id: modifyId,
+            title: newTitle,
+            level: level,
+            kind: kind,
+            deadline: deadline,
+            event: 'modify'
+        })
+    });
+    const resJson = await response.json();
+    if (resJson.success) {
+        modifyCloseBtn.click();
+        thing.innerHTML = '';
+        renderDoThing();
+    }
+    else {
+        alert(resJson.message);
     }
 });
 // 完成事件
@@ -200,8 +231,13 @@ all.addEventListener('click',()=>{
 });
 
 // 关闭全选界面
-closeBtn.addEventListener('click',()=>{
+markCloseBtn.addEventListener('click',()=>{
     mark.style.display = 'none';
+});
+
+// 关闭修改页面
+modifyCloseBtn.addEventListener('click',()=>{
+    modify.style.display = 'none';
 });
 
 // 全部完成

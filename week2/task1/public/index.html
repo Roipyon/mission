@@ -42,7 +42,7 @@
         </div>
     </div>
     <div id="mark">
-        <div class="close">
+        <div id="mark_close" class="close">
             <svg class="icon" style="width: 1em;height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5576"><path d="M585.412525 512.594747L973.601616 124.418586c19.600808-19.600808 19.600808-51.898182 0-71.49899l-2.120404-2.120404c-19.600808-19.600808-51.898182-19.600808-71.49899 0L511.793131 439.518384 123.61697 50.799192c-19.600808-19.600808-51.898182-19.600808-71.49899 0l-2.120404 2.120404c-20.11798 19.600808-20.11798 51.898182 0 71.49899l388.189091 388.189091L49.997576 900.783838c-19.587879 19.600808-19.587879 51.898182 0 71.49899l2.120404 2.120404c19.600808 19.600808 51.898182 19.600808 71.49899 0L511.793131 586.214141l388.189091 388.176162c19.600808 19.600808 51.898182 19.600808 71.49899 0l2.120404-2.120404c19.600808-19.600808 19.600808-51.898182 0-71.49899L585.412525 512.594747z m0 0" p-id="5577"></path></svg>
         </div>
         <div id="mark_main">
@@ -55,6 +55,34 @@
                     <span>全部清除</span>
                 </div>
             </div>
+        </div>
+    </div>
+    <div id="modify">
+        <div id="modify_close" class="close">
+            <svg class="icon" style="width: 1em;height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5576"><path d="M585.412525 512.594747L973.601616 124.418586c19.600808-19.600808 19.600808-51.898182 0-71.49899l-2.120404-2.120404c-19.600808-19.600808-51.898182-19.600808-71.49899 0L511.793131 439.518384 123.61697 50.799192c-19.600808-19.600808-51.898182-19.600808-71.49899 0l-2.120404 2.120404c-20.11798 19.600808-20.11798 51.898182 0 71.49899l388.189091 388.189091L49.997576 900.783838c-19.587879 19.600808-19.587879 51.898182 0 71.49899l2.120404 2.120404c19.600808 19.600808 51.898182 19.600808 71.49899 0L511.793131 586.214141l388.189091 388.176162c19.600808 19.600808 51.898182 19.600808 71.49899 0l2.120404-2.120404c19.600808-19.600808 19.600808-51.898182 0-71.49899L585.412525 512.594747z m0 0" p-id="5577"></path></svg>
+        </div>
+        <div id="modify_main" class="column">
+            <div id="modify_title" class="column">
+                <p style="margin: 0">事项</p>
+                <input type="text" name="title" id="title_input">
+            </div>
+            <div id="modify_level" class="column">
+                <p style="margin: 0">优先级</p>
+                <div id="level_radio">
+                    <input type="radio" name="level" id="level_input1" value="高">高
+                    <input type="radio" name="level" id="level_input2" value="中">中
+                    <input type="radio" name="level" id="level_input3" value="低">低
+                </div>
+            </div>
+            <div id="modify_kind" class="column">
+                <p style="margin: 0">分类</p>
+                <input type="text" name="kind" id="kind_input" style="width: 100px;">
+            </div>
+            <div id="modify_deadline" class="column">
+                <p style="margin: 0">截止时间</p>
+                <input type="datetime-local" name="deadline" id="time_input">
+            </div>
+            <div id="modify_btn">确定</div>
         </div>
     </div>
 </body>
