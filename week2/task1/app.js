@@ -66,7 +66,13 @@ app.post('/',async(req,res)=>{
     else if (waitModify.event === 'sortbylevel')
     {
         const rows = await pool.query('select * from things order by field(level,"null","低","中","高")');
-        if (!rows[0].length) res.json({success: false,message: '事件查询失败！'});
+        if (!rows[0].length) res.json({success: false, message: '事件查询失败！'});
+        else res.json(rows[0]);
+    }
+    else if (waitModify.event === 'allclass')
+    {
+        const rows = await pool.query('select distinct class from things where class is not null');
+        if (!rows[0].length) res.json({success: false, message: '类别查询失败！'});
         else res.json(rows[0]);
     }
 });

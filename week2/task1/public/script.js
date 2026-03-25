@@ -18,8 +18,13 @@ const kindInput = document.querySelector('#kind_input');
 const timeInput = document.querySelector('#time_input');
 const sortBtn = document.querySelector('#sortBtn');
 const refreshBtn = document.querySelector('#refreshBtn');
+const classification = document.querySelector('#classification');
+const kindShow = document.querySelector('#kind_show');
+const kindSelect = document.querySelector('#kind_select');
+const kindCloseBtn = document.querySelector('#kind_close');
 
 let modifyId = 0;
+let classArr = [];
 
 // 渲染事件
 async function renderDoThing(){
@@ -104,6 +109,56 @@ async function sortRenderThing(){
                 </div>
                 `;
         }
+    });
+};
+// 渲染特定分类事件
+async function renderSpecificThing(arr){
+    const _response = await fetch('/get/things',{
+        method: 'get',
+        headers: {'Content-Type': 'application/json'}
+    });
+    const thingJSON = await _response.json();
+    thingJSON.forEach((e)=>{
+        arr.forEach((et)=>{
+            if (e.status === 'do' && e.class === et)
+            {   
+                const content = e.title;
+                const level = e.level === null?'':e.level;
+                const kind = e.class === null?'':e.class;
+                const newThing = document.createElement('div');
+                thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
+                // 添加自定义属性记录事件编号
+                newThing.outerHTML = `
+                    <div class="normal" data-id=${e.id}>
+                        <span class="level">${level}</span>
+                        <span class="kind">${kind}</span>
+                        <input type="checkbox" class="select">
+                        <p class="title">${content}</p>
+                        <p class="change">修改</p>
+                    </div>
+                    `;
+            }
+        });
+    });
+}
+// 渲染分类
+async function renderClass(){
+    const _response = await fetch('/',{
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            event: 'allclass'
+        })
+    });
+    const thingJSON = await _response.json();
+    thingJSON.forEach((e)=>{
+        const newClass = document.createElement('div');
+        kindShow.insertBefore(newClass, document.querySelector('#kind_show div:first-child'));
+        newClass.outerHTML = `
+            <div class="kind_checkbox">
+                <input type="checkbox" name="kind" value=${e.class}>${e.class}
+            </div>
+        `;
     });
 };
 // 渲染本地事件
@@ -274,6 +329,12 @@ bin.addEventListener('click',async(e)=>{
     }
 });
 
+// 分类收集事件
+kindShow.addEventListener('change',async(e)=>{
+    if (e.target.name != 'kind') return;
+    if (e.target.checked) classArr.push(e.target.value);
+});
+
 // 按优先级排序
 sortBtn.addEventListener('click',()=>{
     thing.innerHTML = '';
@@ -283,6 +344,24 @@ sortBtn.addEventListener('click',()=>{
 refreshBtn.addEventListener('click',()=>{
     thing.innerHTML = '';
     renderDoThing();
+});
+// 按类别筛选
+classification.addEventListener('click',()=>{
+    kindSelect.style.display = 'block';
+    renderClass();
+});
+// 关闭按类别筛选界面
+kindCloseBtn.addEventListener('click',()=>{
+    kindSelect.style.display = 'none';
+    kindShow.innerHTML = `
+        <div id="head2"></div>
+    `;
+    // 数组不为空则渲染，空则不渲染
+    if (classArr.length){
+        thing.innerHTML = '';
+        renderSpecificThing(classArr);
+    }
+    classArr = [];
 });
 // 打开全选界面
 all.addEventListener('click',()=>{
