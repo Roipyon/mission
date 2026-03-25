@@ -23,7 +23,6 @@ body {
 }
 #sidebar {
     width: 50px;
-    height: 100px;
     float: right;
     background-color: rgb(255, 255, 255);
     position: relative;
@@ -198,6 +197,14 @@ body {
     border-radius: 5px;
     box-shadow: 1px 1px 2px gray;
     cursor: pointer;
+}
+.icon {
+    cursor: pointer;
+    width: 2em;
+    height: 2em;
+    vertical-align: middle;
+    fill: currentColor;
+    overflow: hidden;
 }
 /* #test {
     width: 100px;

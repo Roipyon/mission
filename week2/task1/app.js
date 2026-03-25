@@ -27,13 +27,8 @@ app.use(express.json());
 app.get('/get/things',async (req,res)=>{
     // 页面刷新获取事项
     const rows = await pool.query('select * from things');
-    if (!rows[0].length) res.json({
-        success: false,
-        message: '待办事项为空！'
-    });
-    else {
-        res.json(rows[0]);
-    }
+    if (!rows[0].length) res.json({success: false,message: '待办事项为空！'});
+    else res.json(rows[0]);
 });
 app.post('/',async(req,res)=>{
     // 处理提交表单
@@ -67,6 +62,12 @@ app.post('/',async(req,res)=>{
         const rows = await pool.query('delete from things');
         if (rows[0].affectedRows >= 1) res.json({success: true,message: ''});
         else res.json({success: false, message: '事件删除失败！'});
+    }
+    else if (waitModify.event === 'sortbylevel')
+    {
+        const rows = await pool.query('select * from things order by field(level,"null","低","中","高")');
+        if (!rows[0].length) res.json({success: false,message: '事件查询失败！'});
+        else res.json(rows[0]);
     }
 });
 

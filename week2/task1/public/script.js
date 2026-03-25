@@ -16,6 +16,8 @@ const newTitleInput = document.querySelector('#title_input');
 const levelRadio = document.querySelectorAll('#level_radio input');
 const kindInput = document.querySelector('#kind_input');
 const timeInput = document.querySelector('#time_input');
+const sortBtn = document.querySelector('#sortBtn');
+const refreshBtn = document.querySelector('#refreshBtn');
 
 let modifyId = 0;
 
@@ -74,6 +76,36 @@ async function renderDidThing(){
         }
     });
 };
+async function sortRenderThing(){
+    const _response = await fetch('/',{
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            event: 'sortbylevel'
+        })
+    });
+    const thingJSON = await _response.json();
+    thingJSON.forEach((e)=>{
+        if (e.status === 'do')
+        {   
+            const content = e.title;
+            const level = e.level === null?'':e.level;
+            const kind = e.class === null?'':e.class;
+            const newThing = document.createElement('div');
+            thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
+            // 添加自定义属性记录事件编号
+            newThing.outerHTML = `
+                <div class="normal" data-id=${e.id}>
+                    <span class="level">${level}</span>
+                    <span class="kind">${kind}</span>
+                    <input type="checkbox" class="select">
+                    <p class="title">${content}</p>
+                    <p class="change">修改</p>
+                </div>
+                `;
+        }
+    });
+};
 // 渲染本地事件
 document.addEventListener('DOMContentLoaded',async()=>{
     renderDoThing();
@@ -104,22 +136,38 @@ createBtn.addEventListener('click',async(e)=>{
         thing.innerHTML = '';
         renderDoThing();
     }
-    else 
-    {
-        alert(resJson.message);
-    }
+    else alert(resJson.message);
 });
 // 修改事件
 thing.addEventListener('click',async(e)=>{
-    modifyId = Number(e.target.parentNode.dataset.id);
-    const target = e.target;
     if (e.target.className != 'change') return;
+    modifyId = Number(e.target.parentNode.dataset.id);
+    const response = await fetch('/get/things',{
+        method: 'get',
+        headers: {'Content-Type': 'application/json'}
+    });
+    const resJson = await response.json();
+    let title, level, kind, deadline;
+    resJson.forEach((e)=>{
+        if (e.id === modifyId)
+        {
+            title = e.title;
+            level = e.level;
+            kind = e.class;
+            deadline = e.deadline;
+        }
+    });
+    const target = e.target;
     if (target.innerText === '修改')
     {
-        const change_p = target.previousElementSibling;
-        const content_p = change_p.innerText;
         modify.style.display = 'block';
-        newTitleInput.value = content_p;
+        newTitleInput.value = title;
+        levelRadio.forEach((e)=>{
+            if (e.value === level) e.checked = true;
+        });
+        kindInput.value = kind;
+        console.dir(deadline);
+        timeInput.value = deadline?deadline.replace('.000Z',''):null;
     }
     
 });
@@ -149,12 +197,13 @@ modifyBtn.addEventListener('click',async()=>{
     const resJson = await response.json();
     if (resJson.success) {
         modifyCloseBtn.click();
+        levelRadio.forEach((e)=>{
+            e.checked = false;
+        }); // 重置优先级选项
         thing.innerHTML = '';
         renderDoThing();
     }
-    else {
-        alert(resJson.message);
-    }
+    else alert(resJson.message);
 });
 // 完成事件
 thing.addEventListener('change', async(e)=>{
@@ -225,6 +274,16 @@ bin.addEventListener('click',async(e)=>{
     }
 });
 
+// 按优先级排序
+sortBtn.addEventListener('click',()=>{
+    thing.innerHTML = '';
+    sortRenderThing();
+});
+// 刷新页面
+refreshBtn.addEventListener('click',()=>{
+    thing.innerHTML = '';
+    renderDoThing();
+});
 // 打开全选界面
 all.addEventListener('click',()=>{
     mark.style.display = 'block';
@@ -238,6 +297,9 @@ markCloseBtn.addEventListener('click',()=>{
 // 关闭修改页面
 modifyCloseBtn.addEventListener('click',()=>{
     modify.style.display = 'none';
+    levelRadio.forEach((e)=>{
+            e.checked = false;
+    }); // 重置优先级选项
 });
 
 // 全部完成
