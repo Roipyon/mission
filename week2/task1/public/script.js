@@ -209,7 +209,7 @@ thing.addEventListener('click',async(e)=>{
             title = e.title;
             level = e.level;
             kind = e.class;
-            deadline = e.deadline;
+            deadline = e.deadline?new Date(e.deadline).toLocaleString('sv-SE',{timeZone: 'Asia/Shanghai'}).replace(' ','T').slice(0,16):null;
         }
     });
     const target = e.target;
@@ -221,8 +221,7 @@ thing.addEventListener('click',async(e)=>{
             if (e.value === level) e.checked = true;
         });
         kindInput.value = kind;
-        console.dir(deadline);
-        timeInput.value = deadline?deadline.replace('.000Z',''):null;
+        timeInput.value = deadline;
     }
     
 });
