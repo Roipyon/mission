@@ -41,9 +41,15 @@ app.post('/',async(req,res)=>{
     }
     else if (waitModify.event === 'modify')
     {
-        const rows = await pool.query('update things set title=?,level=?,class=?,deadline=? where id=?',[waitModify.title,waitModify.level,waitModify.kind,waitModify.deadline,waitModify.id]);
-        if (rows[0].affectedRows === 1) res.json({success: true,message: ''});
-        else res.json({success: false, message: '事件修改失败！'});
+        const now = new Date().toLocaleString('sv-SE',{timeZone: 'Asia/Shanghai'}).replace('T',' ').slice(0,19);
+        if (now <= waitModify.deadline)
+        {
+            const rows = await pool.query('update things set title=?,level=?,class=?,deadline=? where id=?',[waitModify.title,waitModify.level,waitModify.kind,waitModify.deadline,waitModify.id]);
+            if (rows[0].affectedRows === 1) res.json({success: true,message: ''});
+            else res.json({success: false, message: '事件修改失败！'});
+        }
+        else res.json({success: false,message: '截止时间不允许在此刻之前！'});
+        
     }
     else if (waitModify.event === 'delete')
     {

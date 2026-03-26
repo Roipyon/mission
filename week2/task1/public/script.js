@@ -39,10 +39,24 @@ async function renderDoThing(){
             const content = e.title;
             const level = e.level === null?'':e.level;
             const kind = e.class === null?'':e.class;
+            const now = new Date().toLocaleString('sv-SE',{timeZone: 'Asia/Shanghai'}).replace(' ','T').slice(0,16);
+            const _deadline = e.deadline?new Date(e.deadline).toLocaleString('sv-SE',{timeZone: 'Asia/Shanghai'}).replace(' ','T').slice(0,16):null;;
             const newThing = document.createElement('div');
             thing.insertBefore(newThing, document.querySelector('#thing div:first-child'));
             // 添加自定义属性记录事件编号
-            newThing.outerHTML = `
+            if (_deadline <= now) {
+                newThing.outerHTML = `
+                <div class="normal" style="box-sizing: border-box;border: 3px solid red" data-id=${e.id}>
+                    <span class="level">${level}</span>
+                    <span class="kind">${kind}</span>
+                    <input type="checkbox" class="select">
+                    <p class="title" style="text-decoration: line-through;color: gray">${content}</p>
+                    <p class="" style="color: red;font-size: 13px;margin: 0">逾期</p>
+                </div>
+                `;
+            }
+            else {
+                newThing.outerHTML = `
                 <div class="normal" data-id=${e.id}>
                     <span class="level">${level}</span>
                     <span class="kind">${kind}</span>
@@ -51,6 +65,7 @@ async function renderDoThing(){
                     <p class="change">修改</p>
                 </div>
                 `;
+            }
         }
     });
 };
