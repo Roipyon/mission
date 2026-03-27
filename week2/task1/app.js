@@ -42,7 +42,7 @@ app.post('/',async(req,res)=>{
     else if (waitModify.event === 'modify')
     {
         const now = new Date().toLocaleString('sv-SE',{timeZone: 'Asia/Shanghai'}).replace('T',' ').slice(0,19);
-        if (now <= waitModify.deadline)
+        if (waitModify.deadline == null || now <= waitModify.deadline)
         {
             const rows = await pool.query('update things set title=?,level=?,class=?,deadline=? where id=?',[waitModify.title,waitModify.level,waitModify.kind,waitModify.deadline,waitModify.id]);
             if (rows[0].affectedRows === 1) res.json({success: true,message: ''});

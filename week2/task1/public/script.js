@@ -397,9 +397,9 @@ modifyCloseBtn.addEventListener('click',()=>{
 
 // 全部完成
 allBtn[0].addEventListener('click',()=>{
-    const normal = document.querySelectorAll('.normal');
+    const normal = document.querySelectorAll('.normal [type="checkbox"]');
     normal.forEach((e)=>{
-        e.children[0].click(); // 模拟点击
+        e.click(); // 模拟点击
     });
 });
 
