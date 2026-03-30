@@ -1,0 +1,172 @@
+# Common .gitignore for multi-language projects (Windows/macOS/Linux)
+
+###################
+# OS
+###################
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~ 
+.nfs*
+
+###################
+# Logs and databases
+###################
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+*.lock
+
+###################
+# Dependency directories
+###################
+node_modules/
+jspm_packages/
+bower_components/
+
+###################
+# Build / output folders
+###################
+dist/
+build/
+out/
+target/
+bin/
+obj/
+coverage/
+coverage-report/
+*.egg-info/
+.eggs/
+
+###################
+# Python
+###################
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv/
+venv/
+ENV/
+env/
+pip-log.txt
+pip-delete-this-directory.txt
+.mypy_cache/
+.pytest_cache/
+
+###################
+# Java / Maven / Gradle
+###################
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+target/
+build/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+###################
+# .NET / Visual Studio
+###################
+.vs/
+*.user
+*.suo
+*.userosscache
+*.userprefs
+*.ide
+*.sln.docstates
+Debug/
+Release/
+x64/
+x86/
+AppPackages/
+Generated\ Files/
+
+###################
+# IDEs / Editors
+###################
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains (IntelliJ, PyCharm, Rider, WebStorm, etc)
+.idea/
+*.iml
+*.iws
+out/
+
+# Sublime
+*.sublime-workspace
+*.sublime-project
+
+# Eclipse
+.metadata/
+*.project
+*.classpath
+.settings/
+
+###################
+# Environment / secrets
+###################
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets.yml
+*.p12
+*.jks
+
+###################
+# Containers / VM / Infrastructure
+###################
+.vagrant/
+terraform.tfstate
+terraform.tfstate.*
+.terraform/
+docker-compose.override.yml
+docker-compose.*.yml
+
+###################
+# Misc
+###################
+*.bak
+*.swp
+*~.nib
+*.tmp
+*.temp
+.cache/
+npm-debug.log*
+.idea_modules/
+
+# Mac file store
+.AppleDB
+.AppleDesktop
+Network Trash Folder/
+Temporary Items/
+.apdisk
+
+# End of file
