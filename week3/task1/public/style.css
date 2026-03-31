@@ -49,6 +49,7 @@ hr {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: scroll;
 }
 #library_add {
     width: 100%;
@@ -87,6 +88,7 @@ hr {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: scroll;
 }
 #list_delete {
     width: 100%;
@@ -99,6 +101,7 @@ hr {
     align-items: center;
     font-size: 15px;
     color: red;
+    cursor: pointer;
 }
 #editor_title {
     width: 100%;
@@ -120,6 +123,7 @@ hr {
     color: white;
     border-radius: 10px;
     font-size: 15px;
+    cursor: pointer;
 }
 #editor_remove {
     width: 90px;
@@ -132,6 +136,7 @@ hr {
     border-radius: 10px;
     font-size: 15px;
     color: black;
+    cursor: pointer;
 }
 #editor_main {
     width: 100%;
@@ -153,7 +158,7 @@ hr {
     gap: 10px;
 }
 .libraryNormal {
-    width: 100%;
+    width: 98%;
     min-height: 40px;
     background-color: rgba(184, 216, 216, 0.096);
     border: 1px solid rgba(128, 128, 128, 0.212);
@@ -168,7 +173,7 @@ hr {
     color: white;
 }
 .listNormal {
-    width: 100%;
+    width: 98%;
     min-height: 40px;
     background-color: rgba(184, 216, 216, 0.096);
     border: 1px solid rgba(128, 128, 128, 0.212);
@@ -205,6 +210,7 @@ hr {
     align-items: center;
     margin-right: 10px;
     color: gray;
+    cursor: pointer;
 }
 .input {
     border: none;
