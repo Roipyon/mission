@@ -147,7 +147,7 @@ hr {
     justify-content: center;
     align-items: center;
 }
-#editor_main.drop {
+.drop {
     background-color: aliceblue;
 }
 #editor_show {

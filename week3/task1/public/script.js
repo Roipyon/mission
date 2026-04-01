@@ -11,14 +11,14 @@ const editorSave = document.querySelector('#editor_save');
 const editorTitleSpan = document.querySelector('#editor_title span');
 const editorRemove = document.querySelector('#editor_remove');
 
-let editorCount = 0;
 let listCount = 0;
-let editorId;
 let listRTC;
+let editorCount = 0;
+let editorId;
+let editorEmpty = true;
 let canEditor = false;
 let canDelete = false;
 let canAdd = true;
-let editorEmpty = true;
 let craftGlobal = [];
 let craftWaiting = [];
 
@@ -51,11 +51,11 @@ editorMain.addEventListener('dragover',(e)=>{
     e.dataTransfer.dropEffect = 'copy';
 });
 // 进入区域高亮显示
-editorMain.addEventListener('dragenter',(e)=>{
+editorShow.addEventListener('dragenter',(e)=>{
     e.preventDefault();
     e.target.classList.add('drop');
 });
-editorMain.addEventListener('dragleave',(e)=>{
+editorShow.addEventListener('dragleave',(e)=>{
     e.target.classList.remove('drop');
 });
 // 接收拖拽数据
@@ -285,10 +285,11 @@ editorShow.addEventListener('click',(e)=>{
     if (e.target.className === 'editor_delete')
     {
         const deleteId = e.target.parentNode.dataset.value;
-        const length = craftWaiting.length;
-        if (deleteId > length-1) craftWaiting.pop();
-        else craftWaiting.splice(deleteId,1);
-        console.log(deleteId,length,craftWaiting)
-        e.target.parentNode.outerHTML = ``;
+        craftWaiting.splice(deleteId,1);
+        editorShow.innerHTML = '';
+        craftWaiting.forEach((e,index)=>{
+            renderList(e,index+1);
+            editorCount = index+1;
+        });
     }
 });
