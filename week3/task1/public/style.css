@@ -156,6 +156,7 @@ hr {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: scroll;
 }
 .libraryNormal {
     width: 98%;
@@ -189,7 +190,7 @@ hr {
     word-break: break-all;
 }
 .editorNormal {
-    width: 100%;
+    width: 99%;
     height: 50px;
     background-color: rgba(184, 216, 216, 0.096);
     border: 1px solid rgba(128, 128, 128, 0.212);
