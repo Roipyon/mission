@@ -21,13 +21,15 @@ let canDelete = false;
 let canAdd = true;
 let craftGlobal = [];
 let craftWaiting = [];
+let isLibrary = false;
+let dragElement = null;
 
 function renderList(data,index)
 {
     const newThing = document.createElement('div');
     editorShow.appendChild(newThing);
     newThing.outerHTML = `
-        <div class="editorNormal" data-value=${index-1}>
+        <div class="editorNormal" data-value=${index-1} draggable="true">
             <span style="margin-left: 10px;">${index}.${data}</span>
             <div class="editor_delete">删除</div>
         </div>
@@ -41,25 +43,63 @@ libraryShow.addEventListener('dragstart',(e)=>{
     e.dataTransfer.setData('text/plain',e.target.innerText);
     e.dataTransfer.effectAllowed = 'copy';
     e.target.classList.add('libraryDraging');
+    isLibrary = true;
 });
 libraryShow.addEventListener('dragend',(e)=>{
     e.target.classList.remove('libraryDraging');
 });
 
 editorMain.addEventListener('dragover',(e)=>{
+    if (!isLibrary) return;
     e.preventDefault();
     e.dataTransfer.dropEffect = 'copy';
 });
 // 进入区域高亮显示
 editorShow.addEventListener('dragenter',(e)=>{
+    if (!isLibrary) return;
     e.preventDefault();
     e.target.classList.add('drop');
 });
 editorShow.addEventListener('dragleave',(e)=>{
+    if (!isLibrary) return;
     e.target.classList.remove('drop');
 });
+
+//editor_show拖拽
+editorShow.addEventListener('mouseenter',()=>{
+    if (isLibrary) return;
+    const items = document.querySelectorAll('.editorNormal');
+    items.forEach((item)=>{
+        item.addEventListener('dragstart',(e)=>{
+            dragElement = item;
+            e.dataTransfer.setData('text/plain',item.querySelector('span').innerText);
+        });
+        item.addEventListener('dragend',()=>{
+            dragElement = null;
+        });
+        item.addEventListener('dragover',(e)=>{
+            e.preventDefault();
+            if (!dragElement || dragElement === item) return;
+
+            const children = Array.from(editorShow.children);
+            const oldIndex = children.indexOf(dragElement);
+            const newIndex = children.indexOf(item);
+
+            if (oldIndex < newIndex)
+                editorShow.insertBefore(dragElement,item.nextSibling);
+            else editorShow.insertBefore(dragElement,item);
+
+            let mid = null;
+            mid = craftWaiting[oldIndex];
+            craftWaiting[oldIndex] = craftWaiting[newIndex];
+            craftWaiting[newIndex] = mid;
+        });
+    });
+});
+
 // 接收拖拽数据
 editorMain.addEventListener('drop',(e)=>{
+    if (!isLibrary) return;
     e.preventDefault();
     e.target.classList.remove('drop');
     if (canEditor) 
@@ -71,6 +111,7 @@ editorMain.addEventListener('drop',(e)=>{
         renderList(data,editorCount);
         craftWaiting.push(data);
     }
+    isLibrary = false;
 });
 
 // 新增工序
